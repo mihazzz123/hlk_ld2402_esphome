@@ -8,11 +8,11 @@ from esphome.const import (
 
 from . import HLKLD2402Component, CONF_HLK_LD2402_ID
 
-# Define text sensor types
+# Определяем типы текстовых датчиков
 CONF_FIRMWARE_VERSION = "firmware_version"
 CONF_OPERATING_MODE = "operating_mode"
 
-# Define schema with optional sensor types
+# Определяем схему с опциональными типами датчиков
 CONFIG_SCHEMA = text_sensor.text_sensor_schema(
     entity_category=ENTITY_CATEGORY_DIAGNOSTIC
 ).extend({

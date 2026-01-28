@@ -3,11 +3,11 @@ import esphome.config_validation as cv
 from esphome.components import uart, text_sensor
 from esphome.const import CONF_ID, CONF_TIMEOUT, ENTITY_CATEGORY_DIAGNOSTIC
 
-# Make sure text_sensor is listed as a direct dependency
+# Убедитесь, что text_sensor указан как прямая зависимость
 DEPENDENCIES = ["uart", "text_sensor"]
-AUTO_LOAD = ["sensor", "binary_sensor"]  # Remove text_sensor from AUTO_LOAD
+AUTO_LOAD = ["sensor", "binary_sensor"]  # Убираем text_sensor из AUTO_LOAD
 
-# Define our own constants
+# Определяем собственные константы
 CONF_MAX_DISTANCE = "max_distance"
 CONF_HLK_LD2402_ID = "hlk_ld2402_id" 
 
@@ -16,10 +16,10 @@ HLKLD2402Component = hlk_ld2402_ns.class_(
     "HLKLD2402Component", cg.Component, uart.UARTDevice
 )
 
-# This makes the component properly visible and available for other platforms
+# Это делает компонент правильно видимым и доступным для других платформ
 MULTI_CONF = True
 
-# Main component schema
+# Основная схема компонента
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(HLKLD2402Component),
     cv.Optional(CONF_MAX_DISTANCE, default=5.0): cv.float_range(min=0.7, max=10.0),
@@ -36,4 +36,4 @@ async def to_code(config):
     if CONF_TIMEOUT in config:
         cg.add(var.set_timeout(config[CONF_TIMEOUT]))
 
-# Services are defined in services.yaml file and automatically loaded by ESPHome
+# Сервисы определены в файле services.yaml и автоматически загружаются ESPHome

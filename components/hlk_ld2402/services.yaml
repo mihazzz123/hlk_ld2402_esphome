@@ -1,11 +1,11 @@
-# Services for HLK-LD2402
+# Сервисы для HLK-LD2402
 
 set_motion_threshold:
   fields:
     gate: int
     db_value: float
   required: [gate, db_value]
-  
+
 set_micromotion_threshold:
   fields:
     gate: int
@@ -20,7 +20,7 @@ calibrate_with_coefficients:
   required: [trigger_coefficient, hold_coefficient, micromotion_coefficient]
 
 read_motion_thresholds:
-  # No parameters - reads all motion thresholds (gates 0-15)
-  
+  # Без параметров - читает все пороги движения (зоны 0-15)
+
 read_micromotion_thresholds:
-  # No parameters - reads all micromotion thresholds (gates 0-15)
+  # Без параметров - читает все пороги микродвижений (зоны 0-15)

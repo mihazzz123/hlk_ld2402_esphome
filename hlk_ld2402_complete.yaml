@@ -1,32 +1,44 @@
-# Add an on_boot trigger to read thresholds and update sliders
+# ========================================
+# 🔧 ПОЛНАЯ КОНФИГУРАЦИЯ HLK-LD2402
+# ========================================
+# Используйте для:
+# - Первоначальной настройки
+# - Калибровки радара
+# - Тонкой настройки порогов
+# - Диагностики проблем
+#
+# После настройки переключитесь на hlk_ld2402_minimal.yaml
+# ========================================
+
+# Добавляем триггер on_boot для чтения порогов и синхронизации слайдеров
 esphome:
-# Your configuration goes here
+  # Ваша конфигурация здесь
   on_boot:
-    priority: -100  # Run after everything else is initialized
+    priority: -100 # Запускается после инициализации всего остального
     then:
-      - delay: 10s  # Wait for radar module to fully initialize
-      - logger.log: "Reading thresholds and syncing sliders on boot"
+      - delay: 10s # Ждём полной инициализации радара
+      - logger.log: "Чтение порогов и синхронизация слайдеров при загрузке"
       - button.press: read_motion_thresholds
       - delay: 1s
       - button.press: read_micromotion_thresholds
 
-# More of your configuration goes here
+# Остальная конфигурация здесь
 
-# UART configuration for HLK-LD2402
+# Конфигурация UART для HLK-LD2402
 uart:
   id: uart_bus
-  tx_pin: GPIO1  # TX0 hardware UART
-  rx_pin: GPIO3  # RX0 hardware UART
+  tx_pin: GPIO1 # TX0 аппаратный UART
+  rx_pin: GPIO3 # RX0 аппаратный UART
   baud_rate: 115200
   data_bits: 8
   parity: NONE
   stop_bits: 1
 
-# HLK-LD2402 radar component
+# Компонент радара HLK-LD2402
 external_components:
   - source:
       type: git
-      url: https://github.com/mouldybread/hlk_ld2402_esphome
+      url: https://github.com/mihazzz123/hlk_ld2402_esphome.git
 #    refresh: 0ms
 
 hlk_ld2402:
@@ -48,7 +60,7 @@ binary_sensor:
     name: "Micromovement"
     device_class: motion
     hlk_ld2402_id: radar_sensor
-  
+
   - platform: hlk_ld2402
     id: radar_power_interference
     name: "Radar Power Interference"
@@ -65,8 +77,8 @@ sensor:
     device_class: distance
     unit_of_measurement: "cm"
     accuracy_decimals: 1
-    throttle: 2000ms  # Use direct parameter for throttling
-    
+    throttle: 2000ms # Use direct parameter for throttling
+
   # Calibration progress sensor
   - platform: hlk_ld2402
     id: radar_calibration_progress
@@ -89,7 +101,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 0
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_01
     name: "Radar Energy Gate 01 (0.7-1.4m)"
@@ -100,7 +112,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 1
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_02
     name: "Radar Energy Gate 02 (1.4-2.1m)"
@@ -111,7 +123,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 2
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_03
     name: "Radar Energy Gate 03 (2.1-2.8m)"
@@ -122,7 +134,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 3
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_04
     name: "Radar Energy Gate 04 (2.8-3.5m)"
@@ -144,7 +156,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 5
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_06
     name: "Radar Energy Gate 06 (4.2-4.9m)"
@@ -155,7 +167,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 6
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_07
     name: "Radar Energy Gate 07 (4.9-5.6m)"
@@ -166,7 +178,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 7
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_08
     name: "Radar Energy Gate 08 (5.6-6.3m)"
@@ -177,7 +189,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 8
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_09
     name: "Radar Energy Gate 09 (6.3-7.0m)"
@@ -188,7 +200,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 9
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_10
     name: "Radar Energy Gate 10 (7.0-7.7m)"
@@ -199,7 +211,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 10
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_11
     name: "Radar Energy Gate 11 (7.7-8.4m)"
@@ -210,7 +222,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 11
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_12
     name: "Radar Energy Gate 12 (8.4-9.1m)"
@@ -221,7 +233,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 12
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_13
     name: "Radar Energy Gate 13 (9.1-9.8m)"
@@ -232,7 +244,7 @@ sensor:
     entity_category: diagnostic
     energy_gate:
       gate_index: 13
-      
+
   - platform: hlk_ld2402
     id: radar_energy_gate_14
     name: "Radar Energy Gate 14 (9.8-10.5m)"
@@ -255,7 +267,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 0
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_01
     name: "Gate 01 Motion Threshold"
@@ -266,7 +278,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 1
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_02
     name: "Gate 02 Motion Threshold"
@@ -277,7 +289,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 2
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_03
     name: "Gate 03 Motion Threshold"
@@ -288,7 +300,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 3
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_04
     name: "Gate 04 Motion Threshold"
@@ -299,7 +311,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 4
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_05
     name: "Gate 05 Motion Threshold"
@@ -310,7 +322,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 5
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_06
     name: "Gate 06 Motion Threshold"
@@ -321,7 +333,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 6
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_07
     name: "Gate 07 Motion Threshold"
@@ -332,7 +344,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 7
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_08
     name: "Gate 08 Motion Threshold"
@@ -343,7 +355,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 8
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_09
     name: "Gate 09 Motion Threshold"
@@ -354,7 +366,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 9
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_10
     name: "Gate 10 Motion Threshold"
@@ -365,7 +377,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 10
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_11
     name: "Gate 11 Motion Threshold"
@@ -376,7 +388,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 11
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_12
     name: "Gate 12 Motion Threshold"
@@ -387,7 +399,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 12
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_13
     name: "Gate 13 Motion Threshold"
@@ -398,7 +410,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 13
-      
+
   - platform: hlk_ld2402
     id: radar_motion_threshold_14
     name: "Gate 14 Motion Threshold"
@@ -409,7 +421,7 @@ sensor:
     entity_category: diagnostic
     motion_threshold:
       gate_index: 14
-  
+
   # All 15 Micromotion threshold sensors
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_00
@@ -421,7 +433,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 0
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_01
     name: "Gate 01 Micromotion Threshold"
@@ -432,7 +444,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 1
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_02
     name: "Gate 02 Micromotion Threshold"
@@ -443,7 +455,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 2
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_03
     name: "Gate 03 Micromotion Threshold"
@@ -454,7 +466,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 3
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_04
     name: "Gate 04 Micromotion Threshold"
@@ -465,7 +477,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 4
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_05
     name: "Gate 05 Micromotion Threshold"
@@ -476,7 +488,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 5
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_06
     name: "Gate 06 Micromotion Threshold"
@@ -487,7 +499,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 6
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_07
     name: "Gate 07 Micromotion Threshold"
@@ -498,7 +510,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 7
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_08
     name: "Gate 08 Micromotion Threshold"
@@ -509,7 +521,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 8
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_09
     name: "Gate 09 Micromotion Threshold"
@@ -520,7 +532,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 9
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_10
     name: "Gate 10 Micromotion Threshold"
@@ -531,7 +543,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 10
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_11
     name: "Gate 11 Micromotion Threshold"
@@ -542,7 +554,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 11
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_12
     name: "Gate 12 Micromotion Threshold"
@@ -553,7 +565,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 12
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_13
     name: "Gate 13 Micromotion Threshold"
@@ -564,7 +576,7 @@ sensor:
     entity_category: diagnostic
     micromotion_threshold:
       gate_index: 13
-      
+
   - platform: hlk_ld2402
     id: radar_micromotion_threshold_14
     name: "Gate 14 Micromotion Threshold"
@@ -592,7 +604,7 @@ text_sensor:
     hlk_ld2402_id: radar_sensor
     operating_mode: true
 
-# Control buttons - using template buttons 
+# Control buttons - using template buttons
 button:
   - platform: template
     name: "Calibrate"
@@ -617,14 +629,14 @@ button:
       - lambda: id(radar_sensor).set_engineering_mode_direct();
 
   - platform: template
-    name: "Set Normal Mode" 
+    name: "Set Normal Mode"
     icon: "mdi:tune-variant-off"
     on_press:
       - lambda: id(radar_sensor).set_normal_mode_direct();
-      
+
   # Settings reset button with warning icon
   - platform: template
-    name: "Reset Settings"  # Changed from "Factory Reset"
+    name: "Reset Settings" # Changed from "Factory Reset"
     icon: "mdi:factory-reset"
     on_press:
       # Add a warning log message before reset
@@ -632,7 +644,7 @@ button:
       - lambda: id(radar_sensor).factory_reset();
 
   - platform: template
-    name: "Generate Thresholds with Sensitivity Inputs"  # Changed from "Run Calibration with Multipliers"
+    name: "Generate Thresholds with Sensitivity Inputs" # Changed from "Run Calibration with Multipliers"
     icon: "mdi:tune-vertical-variant"
     on_press:
       - lambda: |-
@@ -645,7 +657,7 @@ button:
   # Updated buttons to read thresholds AND update sliders
   - platform: template
     name: "Read Motion Thresholds"
-    id: read_motion_thresholds  # Add this ID for referencing in on_boot
+    id: read_motion_thresholds # Add this ID for referencing in on_boot
     icon: "mdi:refresh"
     entity_category: diagnostic
     on_press:
@@ -668,10 +680,10 @@ button:
           id(gate_12_motion_threshold).publish_state(id(radar_motion_threshold_12).state);
           id(gate_13_motion_threshold).publish_state(id(radar_motion_threshold_13).state);
           id(gate_14_motion_threshold).publish_state(id(radar_motion_threshold_14).state);
-      
+
   - platform: template
     name: "Read Micromotion Thresholds"
-    id: read_micromotion_thresholds  # Add this ID for referencing in on_boot
+    id: read_micromotion_thresholds # Add this ID for referencing in on_boot
     icon: "mdi:refresh"
     entity_category: diagnostic
     on_press:
@@ -698,7 +710,7 @@ button:
 # Add sliders for calibration coefficients and gate thresholds - all sliders must be in number section
 number:
   - platform: template
-    name: "Calibration: Trigger Multiplier"  # Updated name to clarify purposeurpose
+    name: "Calibration: Trigger Multiplier" # Updated name to clarify purposeurpose
     id: trigger_coefficient
     optimistic: true
     min_value: 1.0
@@ -707,10 +719,10 @@ number:
     initial_value: 3.5
     icon: "mdi:tune-vertical"
     unit_of_measurement: "x"
-    entity_category: config  # Add this to indicate it's a configuration parameter
-    
+    entity_category: config # Add this to indicate it's a configuration parameter
+
   - platform: template
-    name: "Calibration: Hold Multiplier"  # Updated named name
+    name: "Calibration: Hold Multiplier" # Updated named name
     id: hold_coefficient
     optimistic: true
     min_value: 1.0
@@ -719,10 +731,10 @@ number:
     initial_value: 3.0
     icon: "mdi:tune-vertical"
     unit_of_measurement: "x"
-    entity_category: config  # Add this to indicate it's a configuration parameter
-    
+    entity_category: config # Add this to indicate it's a configuration parameter
+
   - platform: template
-    name: "Calibration: Micromotion Multiplier"  # Updated named name
+    name: "Calibration: Micromotion Multiplier" # Updated named name
     id: micromotion_coefficient
     optimistic: true
     min_value: 1.0
@@ -731,7 +743,7 @@ number:
     initial_value: 4.0
     icon: "mdi:tune-vertical"
     unit_of_measurement: "x"
-    entity_category: config  # Add this to indicate it's a configuration parameter
+    entity_category: config # Add this to indicate it's a configuration parameter
 
   # Motion threshold sliders for gates
   - platform: template
@@ -747,7 +759,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(0, id(gate_00_motion_threshold).state);
-  
+
   - platform: template
     name: "Gate 01 Motion Threshold"
     id: gate_01_motion_threshold
@@ -761,7 +773,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(1, id(gate_01_motion_threshold).state);
-  
+
   - platform: template
     name: "Gate 02 Motion Threshold"
     id: gate_02_motion_threshold
@@ -775,7 +787,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(2, id(gate_02_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 03 Motion Threshold"
     id: gate_03_motion_threshold
@@ -789,7 +801,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(3, id(gate_03_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 04 Motion Threshold"
     id: gate_04_motion_threshold
@@ -803,7 +815,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(4, id(gate_04_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 05 Motion Threshold"
     id: gate_05_motion_threshold
@@ -817,7 +829,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(5, id(gate_05_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 06 Motion Threshold"
     id: gate_06_motion_threshold
@@ -831,7 +843,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(6, id(gate_06_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 07 Motion Threshold"
     id: gate_07_motion_threshold
@@ -845,7 +857,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(7, id(gate_07_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 08 Motion Threshold"
     id: gate_08_motion_threshold
@@ -859,7 +871,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(8, id(gate_08_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 09 Motion Threshold"
     id: gate_09_motion_threshold
@@ -873,7 +885,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(9, id(gate_09_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 10 Motion Threshold"
     id: gate_10_motion_threshold
@@ -887,7 +899,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(10, id(gate_10_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 11 Motion Threshold"
     id: gate_11_motion_threshold
@@ -901,7 +913,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(11, id(gate_11_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 12 Motion Threshold"
     id: gate_12_motion_threshold
@@ -915,7 +927,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(12, id(gate_12_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 13 Motion Threshold"
     id: gate_13_motion_threshold
@@ -929,7 +941,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(13, id(gate_13_motion_threshold).state);
-          
+
   - platform: template
     name: "Gate 14 Motion Threshold"
     id: gate_14_motion_threshold
@@ -943,7 +955,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_motion_threshold(14, id(gate_14_motion_threshold).state);
-  
+
   # Micromotion threshold sliders for gates
   - platform: template
     name: "Gate 00 Micromotion Threshold"
@@ -958,7 +970,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(0, id(gate_00_micromotion_threshold).state);
-  
+
   - platform: template
     name: "Gate 01 Micromotion Threshold"
     id: gate_01_micromotion_threshold
@@ -972,7 +984,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(1, id(gate_01_micromotion_threshold).state);
-  
+
   - platform: template
     name: "Gate 02 Micromotion Threshold"
     id: gate_02_micromotion_threshold
@@ -986,7 +998,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(2, id(gate_02_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 03 Micromotion Threshold"
     id: gate_03_micromotion_threshold
@@ -1000,7 +1012,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(3, id(gate_03_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 04 Micromotion Threshold"
     id: gate_04_micromotion_threshold
@@ -1014,7 +1026,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(4, id(gate_04_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 05 Micromotion Threshold"
     id: gate_05_micromotion_threshold
@@ -1028,7 +1040,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(5, id(gate_05_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 06 Micromotion Threshold"
     id: gate_06_micromotion_threshold
@@ -1042,7 +1054,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(6, id(gate_06_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 07 Micromotion Threshold"
     id: gate_07_micromotion_threshold
@@ -1056,7 +1068,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(7, id(gate_07_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 08 Micromotion Threshold"
     id: gate_08_micromotion_threshold
@@ -1070,7 +1082,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(8, id(gate_08_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 09 Micromotion Threshold"
     id: gate_09_micromotion_threshold
@@ -1084,7 +1096,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(9, id(gate_09_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 10 Micromotion Threshold"
     id: gate_10_micromotion_threshold
@@ -1098,7 +1110,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(10, id(gate_10_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 11 Micromotion Threshold"
     id: gate_11_micromotion_threshold
@@ -1112,7 +1124,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(11, id(gate_11_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 12 Micromotion Threshold"
     id: gate_12_micromotion_threshold
@@ -1126,7 +1138,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(12, id(gate_12_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 13 Micromotion Threshold"
     id: gate_13_micromotion_threshold
@@ -1140,7 +1152,7 @@ number:
     on_value:
       - lambda: |-
           id(radar_sensor).set_gate_micromotion_threshold(13, id(gate_13_micromotion_threshold).state);
-          
+
   - platform: template
     name: "Gate 14 Micromotion Threshold"
     id: gate_14_micromotion_threshold

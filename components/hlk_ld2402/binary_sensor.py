@@ -11,10 +11,10 @@ from esphome.const import (
 
 from . import HLKLD2402Component, CONF_HLK_LD2402_ID
 
-# Define sensor types
+# Определяем типы датчиков
 CONF_POWER_INTERFERENCE = "power_interference"
 
-# Define the schema for binary sensors - START BY EXTENDING THE BASE SCHEMA
+# Определяем схему для бинарных датчиков - НАЧИНАЕМ С РАСШИРЕНИЯ БАЗОВОЙ СХЕМЫ
 CONFIG_SCHEMA = binary_sensor.binary_sensor_schema().extend({
     cv.GenerateID(): cv.declare_id(binary_sensor.BinarySensor),
     cv.Required(CONF_HLK_LD2402_ID): cv.use_id(HLKLD2402Component),

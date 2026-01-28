@@ -14,19 +14,19 @@ from . import HLKLD2402Component, CONF_HLK_LD2402_ID
 
 CONF_THROTTLE = "throttle"
 CONF_CALIBRATION_PROGRESS = "calibration_progress"
-CONF_ENERGY_GATE = "energy_gate"  # Energy gate sensors
-CONF_GATE_INDEX = "gate_index"     # Gate number (0-13)
-CONF_MOTION_THRESHOLD = "motion_threshold"  # Motion threshold sensors
-CONF_MICROMOTION_THRESHOLD = "micromotion_threshold"  # Micromotion threshold sensors
+CONF_ENERGY_GATE = "energy_gate"  # Датчики энергетических зон
+CONF_GATE_INDEX = "gate_index"     # Номер зоны (0-13)
+CONF_MOTION_THRESHOLD = "motion_threshold"  # Датчики порогов движения
+CONF_MICROMOTION_THRESHOLD = "micromotion_threshold"  # Датчики порогов микродвижений
 
-# Update schema to include threshold sensors
+# Обновляем схему для включения датчиков порогов
 CONFIG_SCHEMA = sensor.sensor_schema().extend({
     cv.GenerateID(): cv.declare_id(sensor.Sensor),
     cv.Required(CONF_HLK_LD2402_ID): cv.use_id(HLKLD2402Component),
     cv.Optional(CONF_THROTTLE): cv.positive_time_period_milliseconds,
     cv.Optional(CONF_CALIBRATION_PROGRESS, default=False): cv.boolean,
     cv.Optional(CONF_ENERGY_GATE): cv.Schema({
-        cv.Required(CONF_GATE_INDEX): cv.int_range(0, 14),  # Should be (0, 14) for 15 gates
+        cv.Required(CONF_GATE_INDEX): cv.int_range(0, 14),  # Должно быть (0, 14) для 15 зон
     }),
     cv.Optional(CONF_MOTION_THRESHOLD): cv.Schema({
         cv.Required(CONF_GATE_INDEX): cv.int_range(0, 15),
@@ -50,10 +50,10 @@ async def to_code(config):
         gate_index = config[CONF_MICROMOTION_THRESHOLD][CONF_GATE_INDEX]
         cg.add(parent.set_micromotion_threshold_sensor(gate_index, var))
     elif config.get(CONF_CALIBRATION_PROGRESS):
-        # This is a calibration progress sensor
+        # Это датчик прогресса калибровки
         cg.add(parent.set_calibration_progress_sensor(var))
     else:
-        # This is a regular distance sensor
+        # Это обычный датчик расстояния
         cg.add(parent.set_distance_sensor(var))
         if CONF_THROTTLE in config:
             cg.add(parent.set_distance_throttle(config[CONF_THROTTLE]))
